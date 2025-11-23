@@ -11,7 +11,38 @@
         <ul>
         <li><a href="https://webfs.anderserik.com">webfs.anderserik</a></li>
         <li><a href="https://anderserik.com">anderserik</a></li>
+
+
+        <div id="madison-time">Madison time</div>
+        <div id="madison-temp">Madison Temp</div>
     </body>
+
+
+    <!-- script to fetch time and weather data for madison, WI -->
+    <script>
+        async function fetchMadisonData() {
+            // Fetch time data
+            const timeResponse = await fetch(
+                'http://worldtimeapi.org/api/timezone/America/Chicago'
+            );
+            console.log(timeResponse);
+            const timeData = await timeResponse.json();
+            console.log(timeData);
+            console.log(timeData.datetime);
+            const madisonDateObject = new Date(timeData.datetime);
+            document.getElementById('madison-time').innerText = `Current time in Madison, WI: ${madisonDateObject.toLocaleTimeString()}`;
+
+            // Fetch weather data
+            const weatherResponse = await fetch(
+                'https://api.open-meteo.com/v1/forecast?latitude=43.0731&longitude=-89.4012&current_weather=true'
+            );
+            const weatherData = await weatherResponse.json();
+            const madisonTemp = weatherData.current_weather.temperature;
+            document.getElementById('madison-temp').innerText = `Current temperature in Madison, WI: ${madisonTemp}°C`;
+        }
+
+        fetchMadisonData();
+    </script>
 </html>
 
 
